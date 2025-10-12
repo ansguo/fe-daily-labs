@@ -1,0 +1,59 @@
+<!-- 
+Custom elements（自定义标签）有两种
+1. 自主自定义标签，全新的元素，继承自HTMLElement
+2. 自定义内建元素，继承内建的HTML元素，比如HTMLButtonElement
+
+Custom element名称必须包括一个短横线 -
+
+
+-->
+<html lang="en">
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom elements</title>
+</head>
+
+<body>
+  <script>
+    class TimeFormatted extends HTMLElement {
+
+      render() { // (1)
+        let date = new Date(this.getAttribute('datetime') || Date.now());
+
+        this.innerHTML = new Intl.DateTimeFormat("default", {
+          year: this.getAttribute('year') || undefined,
+          month: this.getAttribute('month') || undefined,
+          day: this.getAttribute('day') || undefined,
+          hour: this.getAttribute('hour') || undefined,
+          minute: this.getAttribute('minute') || undefined,
+          second: this.getAttribute('second') || undefined,
+          timeZoneName: this.getAttribute('time-zone-name') || undefined,
+        }).format(date);
+      }
+
+
+      connectedCallback() {
+        if (!this.rendered) {
+          this.render()
+          this.rendered = true
+        }
+      }
+    }
+
+    /** 注册此元素 */
+    customElements.define("time-formatted", TimeFormatted)
+  </script>
+
+  <dguojingan>
+    <h1>time-formatted</h1>
+
+    <time-formatted datetime="2025-10-06" year="numeric" month="long" day="numeric" hour="numeric" minute="numeric"
+      second="numeric" time-zone-name="short"></time-formatted>
+  </dguojingan
+
+</body>
+
+</html>

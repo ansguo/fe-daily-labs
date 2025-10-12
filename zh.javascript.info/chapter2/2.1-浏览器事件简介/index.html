@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h2>HTML特性</h2>
+  <p>
+    HTML 特性名是大小写不敏感的，所以 ONCLICK 和 onClick 以及 onCLICK 都一样可以运行。但是特性通常是小写的：onclick
+  </p>
+  <section>
+    <!-- 处理程序可以设置在 HTML 中名为 on<event> 的特性（attribute）中 -->
+    <input type="button" value="click me 1" onclick="alert('click')">
+
+
+    <script>
+      function countRabibits() {
+        for (let i = 0; i <= 3; i++) {
+          alert('number ' + i)
+        }
+
+      }
+    </script>
+    <input type="button" value="click me 2" onClick="countRabibits()">
+  </section>
+
+  <h2>DOM属性</h2>
+  <section>
+    <input id="button01" type="button" value="click me 3">
+    <script>
+      button01.onclick = function () {
+        alert('button01 clicked!')
+      }
+    </script>
+
+
+    <button onclick="alert(this.innerHTML)">访问元素：this</button>
+
+    <!-- 可能出现的错误 -->
+    <p>如果我们添加了括号，那么 sayThanks() 就变成了一个函数调用。所以，最后一行代码实际上获得的是函数执行的 结果，即 undefined（因为这个函数没有返回值）。此代码不会工作
+
+    </p>
+    <button id="button02">say thanks</button>
+    <script>
+      function sayThanks() {
+        alert('thanks!')
+      }
+      button02.onclick = sayThanks
+      button02.onclick = function () {
+        alert('thanks 02!')
+      }
+
+    </script>
+
+    <p>DOM 属性是大小写敏感的, 将处理程序分配给 elem.onclick, 因为 DOM 属性是大小写敏感的。
+    </p>
+    <p>不要对处理程序使用 setAttribute</p>
+  </section>
+
+  <h2>addEventListener</h2>
+  <section>
+    <p>DOM属性分配事件的处理程序，onclick这种方式不能为一个事件分配多个处理程序</p>
+    <p>提出了一种使用特殊方法 addEventListener 和 removeEventListener 来管理处理程序的替代方法</p>
+    <p>element.addEventListener(event, handler[, options]);</p>
+    <p>element.removeEventListener 移除需要相同的函数，如果我们不将函数存储在一个变量中，那么我们就无法移除它。由 addEventListener 分配的处理程序将无法被“读回”</p>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('DOMContendLoaded!')
+      })
+    </script>
+  </section>
+
+  <h2>事件对象</h2>
+  <section>
+    <p>
+      当事件发生时，浏览器会创建一个 event 对象，将详细信息放入其中，并将其作为参数传递给处理程序。
+    </p>
+    <input type="button" value="click me" id="button03">
+    <script>
+      button03.onclick = function (event) {
+        console.log('button03 clicked, event: ', event)
+        console.log('button03 clicked, event.type', event.type)
+      }
+    </script>
+  </section>
+
+  <h2>对象处理程序：handleEvent</h2>
+  <section>
+    <p>我们不仅可以分配函数，可以使用addEventListener讲一个对象分配为事件处理程序，当事件发生的时候，就会调用对象的handleEvent方法</p>
+    <button id="button04">Click me</button>
+    <script>
+      const obj = {
+        handleEvent(event) {
+          console.log('button04 event', event)
+        }
+      }
+      button04.addEventListener('click', obj)
+    </script>
+
+
+    <button id="button05"> menu test</button>
+    <script>
+      class Menu {
+        handleEvent(event) {
+          // 可以这样：
+          // switch (event.type) {
+          //   case 'mousedown':
+          //     button05.innerHTML = 'mouse run mousedown'
+          //     break
+          //   case 'mouseup':
+          //     button05.innerHTML = 'mouse run mouseup'
+          // }
+
+          // 也可以这样
+          // 这里把首字母变成大写
+          const method = 'on' + event.type[0].toUpperCase() + event.type.slice(1)
+          this[method](event);
+        }
+
+        onMousedown(event) {
+          button05.innerHTML = 'mouse run mousedown'
+        }
+
+        onMouseup(event) {
+          button05.innerHTML = 'mouse run mouseup'
+        }
+      }
+
+      const menu = new Menu()
+      button05.addEventListener('mousedown', menu)
+      button05.addEventListener('mouseup', menu)
+    </script>
+  </section>
+
+  <h2>任务</h2>
+  <section>
+    <p>01. 为 button 添加 JavaScript 代码，使得
+      在我们点击该按钮时消失。</p>
+    <div id="text">text</div>
+    <button id="button06">click to hide the text</button>
+    <script>
+      button06.onclick = function () {
+        const text = document.getElementById('text')
+        text.style.display = 'none'
+      }
+    </script>
+
+    <p>02. 在变量中有一个按钮。它上面没有处理程序。
+      执行以下代码之后，哪些处理程序会在按钮被点击时运行？会显示哪些 alert？</p>
+    <button id="button07">button07</button>
+    <script>
+      button07.addEventListener("click", () => alert("1"));
+      button07.removeEventListener("click", () => alert("1"));
+      button07.onclick = () => alert(2);
+    </script>
+
+
+    <p> 03. 让球在球场中移动，点击球场中任意一点，让球在球场中移动</p>
+    <div id="field" style="
+      position: relative;
+      width: 200px;
+      height: 150px;
+      border: 10px solid black;
+      background-color: #00FF00;
+      overflow: hidden;
+      cursor: pointer;
+      margin-left: 20px;
+    ">
+      <img src="https://en.js.cx/clipart/ball.svg" id="ball" style="
+        position: absolute;
+        left: 0;
+        top: 0;
+        transition: 1s all;
+      "> . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+      . . . . . . . . . . .
+      . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . . . . . . . . .
+    </div>
+    <script>
+      const field = document.getElementById('field')
+      const ball = document.getElementById('ball')
+      const fieldWrap = field.getBoundingClientRect()
+
+      field.onclick = function (event) {
+        /**
+         * clientLeft
+         * 表示元素内容区域到其内边框的偏移距离，通常等于元素的左边框宽度
+         */
+         // 小球左上角坐标 = 点击点坐标 - 球场左上角 - 球场边框 - 球宽/高的一半
+        const left = event.clientX - fieldWrap.left - field.clientLeft - ball.clientWidth / 2
+        const top = event.clientY - fieldWrap.top - field.clientTop - ball.clientHeight / 2
+
+        // 防止小球出界
+        const maxLeft = field.clientWidth - ball.clientWidth
+        const maxTop = field.clientHeight - ball.clientHeight
+        // 0 <= left <= maxLeft
+        const safeLeft = Math.min(Math.max(0, left), maxLeft)
+        const safeTop = Math.min(Math.max(0, top), maxTop)
+
+        // ball.style.left = safeLeft + 'px'
+        // ball.style.top = safeTop + 'px'
+        // 用transform实现移动，性能更好
+        ball.style.transform = `translate(${safeLeft}px, ${safeTop}px)`
+      }
+    </script>
+
+    <p>04. 轮播图</p>
+    <div>
+      
+    </div>
+  </section>
+
+</body>
+
+</html>
