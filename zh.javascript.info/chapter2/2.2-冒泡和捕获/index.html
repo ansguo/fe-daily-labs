@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="example.css">
+</head>
+
+<body>
+  <h2>event.target</h2>
+  
+  <section class="demo-01">
+    A click shows both <code>event.target</code> and <code>this</code> to compare:
+    <form id="form">FORM
+      <div>DIV
+        <p>P</p>
+      </div>
+    </form>
+  </section>
+
+  <script src="script.js"></script>
+
+  <h2>停止冒泡</h2>
+  <div onclick="alert('here')">
+    <!-- <button id="button01" onclick="event.stopPropagation()">click me</button> -->
+    <button id="button01">click me</button>
+  </div>
+
+  <script>
+    button01.addEventListener('click', function(event) {
+      // 对比一下stopPropagation 和 stopImmediatePropagation
+      // event.stopPropagation()
+      event.stopImmediatePropagation()
+      alert('button01 clicked 1')
+    })
+
+    button01.addEventListener('click', function() {
+      alert('button01 clicked 2')
+    })
+  </script>
+
+  <h2>捕获</h2>
+  
+</body>
+</html>
