@@ -15,7 +15,7 @@ class LRUCache {
     return this.#cache.has(key)
   }
 
-  /** 获取某个key对应的值 */
+  /** 
   get(key) {
     if (!this.has(key)) {
       return
