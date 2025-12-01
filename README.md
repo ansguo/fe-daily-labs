@@ -1,3 +1,3 @@
-FE-DAILY
+FE-DAILY-LABS
 
 

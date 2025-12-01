@@ -1,0 +1,49 @@
+<div class="innerBox">
+  <input type="text" required />
+  <span>姓名</span>
+</div>
+
+<style>
+  .innerBox {
+    position: relative;
+    width: 200px;
+  }
+
+  .innerBox input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    outline: none;
+  }
+
+  .innerBox span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 10px;
+    font-size: 14px;
+    pointer-events: none;
+    color: #ccc;
+  }
+
+  /* :valid CSS 伪类表示内容验证正确 */
+  /* 
+      ~ 普通相邻元素选择器
+      + 直接相邻元素选择器
+    */
+  .innerBox input:valid ~ span,
+  .innerBox input:focus ~ span {
+    color: orange;
+    transform: translateX(8px) translateY(-7px);
+    font-size: 12px;
+    padding: 0 6px;
+    background-color: #fff;
+  }
+
+  /* 添加transition过渡 */
+  .innerBox span {
+    transition: all 0.5s;
+  }
+</style>
